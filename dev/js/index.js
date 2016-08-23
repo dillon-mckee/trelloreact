@@ -1,6 +1,19 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var state = {
+  boardTitle: 'My Trello',
+  lists: [
+    {title: 'My first list',
+    cards: ['car 1', 'card 2', 'card 3']
+    },
+    {
+      title: 'my second list',
+      cards: [1,2,3]
+    }
+  ]
+};
+
 var Card = function(props) {
 
     return (
@@ -27,15 +40,16 @@ var List = function(props) {
 var Board = function(props) {
   return (
     <div className="board">
-      <div className="boardTitle">{props.boardTitle}
-      <List listTitle="Thinkful"/>
-      <List listTitle="Jobs"/>
+      <div className="boardTitle">{props.state.boardTitle}
+      <List listTitle={props.state.lists[0].title} cards={props.state.lists[0].cards} />
       </div>
     </div>
   )
 }
+
 document.addEventListener('DOMContentLoaded', function() {
-  //ReactDOM.render(<Board boardTitle="MY BOARD"/>, document.getElementById('app'));
-  ReactDOM.render(<List listTitle="Coding" cards={['card1', 'card2', 'card3', 'card4']}/>, document.getElementById('app'));
+  ReactDOM.render(<Board state={state}/>, document.getElementById('app'));
 
 });
+
+
