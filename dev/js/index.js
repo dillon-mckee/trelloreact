@@ -26,12 +26,13 @@ var Card = function(props) {
 var List = React.createClass({ // aka ListCointainer
   onAddSubmit: function(event) {
     event.preventDefault();
-    console.log('AddSubmit happened');
+   state.lists[0].cards.push(event.target.value);
+   console.log(state)
   },
-
+//this.state.props.cards.push(event.target.value)
   onAddInputChanged: function(event) {
     event.preventDefault();
-    console.log('InputChanged');
+    console.log(event, 'Input Changed')
   },
 
   render: function() {
