@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var state = {
+var seedData = {
   boardTitle: 'My Trello',
   lists: [
     {title: 'My first list',
@@ -24,19 +24,31 @@ var Card = function(props) {
 };
 
 var List = React.createClass({ // aka ListCointainer
+  getInitialState: function() {
+    return {
+      cards: [],
+      textInput: ''
+    }
+  },
+
   onAddSubmit: function(event) {
     event.preventDefault();
-   state.lists[0].cards.push(event.target.value);
-   console.log(state)
+    this.setState({
+      cards: this.state.cards.concat([this.state.textInput])
+    })
+   console.log(seedData)
   },
 //this.state.props.cards.push(event.target.value)
   onAddInputChanged: function(event) {
     event.preventDefault();
-    console.log(event, 'Input Changed')
+    this.setState({
+      textInput: event.target.value
+    })
+    console.log(event.target.value, 'Input Changed')
   },
 
   render: function() {
-  var numberCards = this.props.cards.map(function(val,index){
+  var numberCards = this.state.cards.map(function(val,index){
     return <Card key={index} cardText={val} />
   });
     return (
@@ -63,15 +75,15 @@ var AddListItem = function(props) {
 var Board = function(props) {
   return (
     <div className="board">
-      <div className="boardTitle">{props.state.boardTitle}
-      <List listTitle={props.state.lists[0].title} cards={props.state.lists[0].cards} />
+      <div className="boardTitle">{props.seedData.boardTitle}
+      <List listTitle={props.seedData.lists[0].title} cards={props.seedData.lists[0].cards} />
       </div>
     </div>
   )
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  ReactDOM.render(<Board state={state}/>, document.getElementById('app'));
+  ReactDOM.render(<Board seedData={seedData}/>, document.getElementById('app'));
 
 });
 
