@@ -23,19 +23,41 @@ var Card = function(props) {
     );
 };
 
-var List = function(props) {
-  var numberCards = props.cards.map(function(val,index){
+var List = React.createClass({ // aka ListCointainer
+  onAddSubmit: function(event) {
+    event.preventDefault();
+    console.log('AddSubmit happened');
+  },
+
+  onAddInputChanged: function(event) {
+    event.preventDefault();
+    console.log('InputChanged');
+  },
+
+  render: function() {
+  var numberCards = this.props.cards.map(function(val,index){
     return <Card key={index} cardText={val} />
   });
-
     return (
       <div className="lists">
-        <div className="listTitle">{props.listTitle}
+        <div className="listTitle">{this.props.listTitle}
           {numberCards}
         </div>
+      <AddListItem onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} />
       </div>
     );
-  };
+  }
+});
+
+var AddListItem = function(props) {
+  return (
+    <form onSubmit={props.onAddSubmit}>
+      <input type="text" onChange={props.onAddInputChanged}>
+      </input>
+      <button type="submit">Submit</button>
+    </form>
+    )
+};
 
 var Board = function(props) {
   return (
