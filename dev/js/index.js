@@ -2,23 +2,34 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var seedData = {
-  boardTitle: 'My Trello',
-  lists: [
-    {title: 'My first list',
-    cards: ['car 1', 'card 2', 'card 3']
-    },
-    {
-      title: 'my second list',
-      cards: [1,2,3]
-    }
-  ]
+ decks: [
+   {
+   title: 'Deck',
+   questions: [
+   <h3>What phase of the MVC model would best describe React?</h3>,
+   <h3>What type of data-binding does React use?</h3>,
+   <h3>What popular company is associated with React?</h3>,
+   <h3>True or False - React has been around for a long time</h3>,
+   <h3>What type of components are known as dumb components</h3>,
+   <h3>True or False - components pass state to each other</h3>
+    ],
+   answers: [
+   <h4>View</h4>,
+    <h4>One way</h4>,
+    <h4>Facebook</h4>,
+    <h4>False</h4>,
+    <h4>Stateful</h4>,
+    <h4>False</h4>
+   ]
+   }
+ ]
 };
-
 var Card = function(props) {
 
     return (
         <div className="cards">
-          <div className="cardText">{props.cardText}</div>
+          <div className="question">{props.question}</div>
+          <div className="answer">{props.answer}</div>
         </div>
     );
 };
@@ -26,65 +37,40 @@ var Card = function(props) {
 var List = React.createClass({ // aka ListCointainer
   getInitialState: function() {
     return {
-      cards: [],
-      textInput: ''
+      questions: [seedData.decks[0].questions],
+      answers: [seedData.decks[0].answers]
+      //textInput: ''
     }
   },
-
-  onAddSubmit: function(event) {
-    event.preventDefault();
-    this.setState({
-      cards: this.state.cards.concat([this.state.textInput])
-    })
-   console.log(seedData)
-  },
-//this.state.props.cards.push(event.target.value)
-  onAddInputChanged: function(event) {
-    event.preventDefault();
-    this.setState({
-      textInput: event.target.value
-    })
-    console.log(event.target.value, 'Input Changed')
-  },
-
   render: function() {
-  var numberCards = this.state.cards.map(function(val,index){
-    return <Card key={index} cardText={val} />
+  var cardAnswers = this.state.answers.map(function(val,index){
+        return <Card key={index} answer={val} />
+ });
+  var cardQuestions = this.state.questions.map(function(val,index){
+    return <Card key={index} question={val}  />
   });
     return (
       <div className="lists">
-        <div className="listTitle">{this.props.listTitle}
-          {numberCards}
+        <div className="deckTitle">{this.props.deckTitle}
+          {cardQuestions}
+          {cardAnswers}
         </div>
-      <AddListItem onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} />
       </div>
     );
   }
 });
 
-var AddListItem = function(props) {
-  return (
-    <form onSubmit={props.onAddSubmit}>
-      <input type="text" onChange={props.onAddInputChanged}>
-      </input>
-      <button type="submit">Submit</button>
-    </form>
-    )
-};
-
-var Board = function(props) {
+var Deck = function(props) {
   return (
     <div className="board">
       <div className="boardTitle">{props.seedData.boardTitle}
-      <List listTitle={props.seedData.lists[0].title} cards={props.seedData.lists[0].cards} />
+      <List deckTitle={props.seedData.decks[0].title}/>
       </div>
     </div>
   )
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  ReactDOM.render(<Board seedData={seedData}/>, document.getElementById('app'));
+  ReactDOM.render(<Deck seedData={seedData} questions={seedData.decks[0].cards} answers={seedData.decks[0].answers} />, document.getElementById('app'));
 
 });
-
-
